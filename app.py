@@ -31,18 +31,15 @@ def secret_data():
 
 @app.route('/SQL')
 def sq_l():
-    try:
-        add_user(username = 'yosi', userid = 1, userage = 35)
-        add_user(username = 'dafna', userid = 2, userage = 16)
-        users = User.query.all()
-        response = json.dumps([{
+    add_user(username = 'yosi', userid = 1, userage = 35)
+    add_user(username = 'dafna', userid = 2, userage = 16)
+    users = User.query.all()
+    response = json.dumps([{
             'name':user.name,
             'ID':user.id,
             'age':user.age
-        } for user in users])
-        return Response(response = response, mimetype='application/json')
-    except Exception as e:
-        return Response(response=e)
+    } for user in users])
+    return Response(response = response, mimetype='application/json')
 
 @app.route('/user')
 def user_get():
@@ -58,21 +55,14 @@ def user_get():
         return Response(response=e)
 
 def add_user(userid, username, userage):
-    try:
-        duplicate_test = User.query.filter_by(id = userid).first()
-    except:
-        return Response(response = json.dumps('ERROR 404'), mimetype = 'application/json')
-    if duplicate_test is None:
+    duplicate_test = User.query.filter_by(id = userid).first()
+    return Response(response = json.dumps('ERROR 404'), mimetype = 'application/json')
+    if duplicate_test is not None:
         return -1
-    try:
-        user = User(ID = userid, name = username, age = userage)
-    except:
-        return Response(response = json.dumps('ERROR 405'), mimetype = 'application/json')
-    try:
-        db.session.add(user)
-        db.session.commit()
-    except:
-        return Response(response = json.dumps('ERROR 406'), mimetype = 'application/json')
+    user = User(ID = userid, name = username, age = userage)
+    return Response(response = json.dumps('ERROR 405'), mimetype = 'application/json')
+    db.session.add(user)
+    db.session.commit()
     return 0
 
 
