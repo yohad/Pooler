@@ -67,8 +67,8 @@ def add_user(userid, username, userage):
         return False
     user = User(ID = userid, name = username, age = userage)
     return Response(response = json.dumps('ERROR 405'), mimetype = 'application/json')
-    db.session.add(user)
-    db.session.commit()
+    db.add(user)
+    db.commit()
     return True
 
 
