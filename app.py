@@ -54,11 +54,11 @@ def signup():
 def user_get():
     try:
         users = User.query.all()
-        response = [{
+        response = json.dumps([{
             'id':current_user.id,
             'name':current_user.name,
             'age':current_user.age
-            } for current_user in users]
+            } for current_user in users])
         return Response(response = response, mimetype = 'application/json')
     except Exception as e:
         return Response(response = e)
