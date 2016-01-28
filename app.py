@@ -33,7 +33,7 @@ def user_get():
     response = json.dumps([
     {
         'ID':user.id,
-        'name':self.name
+        'name':self.name,
         'age':self.age
     }
     ] for user in users)
