@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import text
 
 class User:
-    def __init__(ID, name, age):
+    def __init__(self, ID, name, age):
         self.id = ID
         self.name = name
         self.age = age
