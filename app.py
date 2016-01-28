@@ -52,7 +52,7 @@ def signup():
 
 @app.route('/user')
 def user_get():
-    users = User.query.all()
+    users = User.query.all().first()
     response = [{
         'id':current_user.id,
         'name':current_user.name,
@@ -62,11 +62,9 @@ def user_get():
 
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
-    return Response(response = json.dumps('ERROR 404'), mimetype = 'application/json')
     if duplicate_test is not None:
         return False
     user = User(ID = userid, name = username, age = userage)
-    return Response(response = json.dumps('ERROR 405'), mimetype = 'application/json')
     db.add(user)
     db.commit()
     return True
