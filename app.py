@@ -43,25 +43,24 @@ def sq_l():
 
 @app.route('/signup/')
 def signup():
-    ID = request.args.get('id')
-    name = request.args.get('name')
-    age = request.args.get('age')
-    if add_user(ID, name, age):
-        return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
-    return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
-
-@app.route('/user')
-def user_get():
     try:
-        users = User.query.all()
-        response = json.dumps([{
-            'id':current_user.id,
-            'name':current_user.name,
-            'age':current_user.age
-            } for current_user in users])
-        return Response(response = response, mimetype = 'application/json')
+        ID = request.args.get('id')
+        name = request.args.get('name')
+        age = request.args.get('age')
+        if add_user(ID, name, age):
+            return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
+        return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
     except Exception as e:
         return Response(response = e)
+@app.route('/user')
+def user_get():
+    users = User.query.all()
+    response = json.dumps([{
+        'id':current_user.id,
+        'name':current_user.name,
+        'age':current_user.age
+        } for current_user in users])
+    return Response(response = response, mimetype = 'application/json')
 
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
