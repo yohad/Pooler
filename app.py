@@ -40,8 +40,11 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
-@app.route('/signup/<int:ID>#<int:age>#<name>')
-def signup(ID, age, name):
+@app.route('/signup/')
+def signup():
+    ID = request.args.get('id')
+    name = request.args.get('name')
+    age = request.args.get('age')
     if add_user(ID, name, age):
         return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
     return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
