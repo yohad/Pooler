@@ -79,7 +79,7 @@ def user_get():
 
 @app.route('/travels/<int:id>', methods = ['GET'])
 def get_travels(id):
-    if
+    pass
 
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
