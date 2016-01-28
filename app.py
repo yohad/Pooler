@@ -31,15 +31,9 @@ def secret_data():
 
 @app.route('/SQL')
 def sq_l():
-    try:
-        add_user(username = 'yosi', userid = 1, userage = 35)
-        add_user(username = 'dafna', userid = 2, userage = 16)
-    except:
-        return Response(response = json.dumps('ERROR 404'), mimetype = 'application/json')
-    try:
-        users = User.query.all()
-    except:
-        return Response(response = json.dumps('ERROR 405'), mimetype='application/json')
+    add_user(username = 'yosi', userid = 1, userage = 35)
+    add_user(username = 'dafna', userid = 2, userage = 16)
+    users = User.query.all()
     response = json.dumps([{
         'name':user.name,
         'ID':user.id,
@@ -61,10 +55,16 @@ def user_get():
         return Response(response=e)
 
 def add_user(userid, username, userage):
-    duplicate_test = User.query.filter_by(id = userid).first()
+    try:
+        duplicate_test = User.query.filter_by(id = userid).first()
+    except:
+        return Response(response = json.dumps('ERROR 404'), mimetype = 'application/json')
     if duplicate_test is None:
         return -1
-    user = User(ID = userid, name = username, age = userage)
+    try:
+        user = User(ID = userid, name = username, age = userage)
+    except:
+        return Response(response = json.dumps('ERROR 405'), mimetype = 'application/json')
     db.session.add(user)
     db.session.commit()
     return 0
