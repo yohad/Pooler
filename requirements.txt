@@ -1,4 +1,3 @@
-git+git://github.com/yohad/Pooler.git
 psycopg2
 Flask
 Flask-SQLAlchemy
