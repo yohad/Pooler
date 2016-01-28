@@ -33,8 +33,8 @@ def user_get():
     response = json.dumps([
     {
         'ID':user.id,
-        'name':self.name,
-        'age':self.age
+        'name':user.name,
+        'age':user.age
     }
     ] for user in users)
     return Response(response=response, mimetype="application/json")
