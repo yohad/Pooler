@@ -9,11 +9,8 @@ heroku = Heroku(app)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/data', methods=['GET','POST'])
+@app.route('/data')
 def secret_data():
-    password = flask.request.args.get('password')
-    if password == 'BobbyBoten':
-        return 'super super secret data'
     return 'secret data'
 
 if __name__ == '__main__':
