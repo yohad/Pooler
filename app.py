@@ -4,6 +4,15 @@ from flask.ext.heroku import Heroku
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import text
 
+class User:
+    def __init__(ID, name, age):
+        self.id = ID
+        self.name = name
+        self.age = age
+
+yosi = User(209929256, 'yosi', 25)
+david = User(158627528, 'david', 34)
+users = [yosi, david]
 
 app = Flask(__name__)
 heroku = Heroku(app)
@@ -18,6 +27,17 @@ def secret_data():
     if password=='bobbyboten':
         return 'super secret data'
     return 'secret data'
+
+@app.route('/user')
+def user_get():
+    response = json.dumps([
+    {
+        'ID':user.id,
+        'name':self.name
+        'age':self.age
+    }
+    ] for user in users)
+    return Response(response=response, mimetype="application/json")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
