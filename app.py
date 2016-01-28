@@ -17,8 +17,6 @@ class User(db.Model):
         self.id = ID
         self.name = name
         self.age = age
-
-db.create_all()
 db.session.commit()
 
 @app.route('/')
@@ -41,7 +39,11 @@ def sq_l():
         db.session.add(dafna)
         db.session.commit()
         users = User.query.all()
-        response = json.dumps(users)
+        response = json.dumps([{
+            'name':user.name,
+            'ID':user.id,
+            'age':user.age
+        } for user in users])
         return Response(response = response, mimetype='application/json')
     except Exception as e:
         return Response(response=e)
