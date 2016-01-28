@@ -35,6 +35,8 @@ def sq_l():
     try:
         yosi = User(name = 'Yosi', ID = 1, age = 32)
         dafna = User(name = 'Dafna', ID = 2, age = 16)
+    except:
+
         add_user(yosi)
         add_user(dafna)
         users = User.query.all()
@@ -60,12 +62,15 @@ def user_get():
     except Exception as e:
         return Response(response=e)
 
-def add_user(user):
-    duplicate_test = User.query.filter_by(id = user.id).first()
+def add_user(userid, username, userage):
+    duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is None:
         return -1
+    user = User(id = userid, name = username, age = userage)
     db.session.add(user)
     db.session.commit()
+    return 0
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
