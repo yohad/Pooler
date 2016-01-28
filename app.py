@@ -65,8 +65,11 @@ def add_user(userid, username, userage):
         user = User(ID = userid, name = username, age = userage)
     except:
         return Response(response = json.dumps('ERROR 405'), mimetype = 'application/json')
-    db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.add(user)
+        db.session.commit()
+    except:
+        return Response(response = json.dumps('ERROR 406'), mimetype = 'application/json')
     return 0
 
 
