@@ -52,13 +52,16 @@ def signup():
 
 @app.route('/user')
 def user_get():
-    users = User.query.all().first()
-    response = [{
-        'id':current_user.id,
-        'name':current_user.name,
-        'age':current_user.age
-    } for current_user in users]
-    return Response(response = response, mimetype = 'application/json')
+    try:
+        users = User.query.all().first()
+        response = [{
+            'id':current_user.id,
+            'name':current_user.name,
+            'age':current_user.age
+            } for current_user in users]
+        return Response(response = response, mimetype = 'application/json')
+    except Exception as e:
+        return Response(response = e)
 
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
