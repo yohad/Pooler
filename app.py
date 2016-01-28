@@ -4,11 +4,6 @@ from flask.ext.heroku import Heroku
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import text
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-heroku = Heroku(app)
-db = SQLAlchemy(app)
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False)
@@ -17,6 +12,14 @@ class User(db.Model):
         self.id = ID
         self.name = name
         self.age = age
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
+heroku = Heroku(app)
+db = SQLAlchemy(app)
+
+db.create_all()
+db.session.commit()
 
 @app.route('/')
 def hello_world():
