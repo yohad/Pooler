@@ -61,7 +61,7 @@ def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is None:
         return -1
-    user = User(id = userid, name = username, age = userage)
+    user = User(ID = userid, name = username, age = userage)
     db.session.add(user)
     db.session.commit()
     return 0
