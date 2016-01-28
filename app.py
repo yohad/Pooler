@@ -9,5 +9,9 @@ heroku = Heroku(app)
 def hello_world():
     return 'Hello World!'
 
+@app.route('/data')
+def secret_data():
+    return 'secret data'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
