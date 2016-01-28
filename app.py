@@ -33,14 +33,18 @@ def secret_data():
 
 @app.route('/user')
 def user_get():
-    response = json.dumps([
-    {
-        'ID':user.id,
-        'name':user.name,
-        'age':user.age
-    }
-    ] for user in users)
-    return Response(response=response, mimetype="application/json")
+    try:
+        response = json.dumps([
+        {
+            'ID':user.id,
+            'name':user.name,
+            'age':user.age
+        }
+        ] for user in users)
+        return Response(response=response, mimetype="application/json")
+    except Exception as e:
+        return Response(response=e)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
