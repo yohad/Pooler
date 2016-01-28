@@ -35,8 +35,6 @@ def sq_l():
     try:
         yosi = User(name = 'Yosi', ID = 1, age = 32)
         dafna = User(name = 'Dafna', ID = 2, age = 16)
-    except:
-
         add_user(yosi)
         add_user(dafna)
         users = User.query.all()
