@@ -53,7 +53,7 @@ def signup():
 @app.route('/user')
 def user_get():
     try:
-        users = User.query.all().first()
+        users = User.query.all()
         response = [{
             'id':current_user.id,
             'name':current_user.name,
