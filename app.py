@@ -67,8 +67,8 @@ def add_user(userid, username, userage):
     if duplicate_test is not None:
         return False
     user = User(ID = userid, name = username, age = userage)
-    db.add(user)
-    db.commit()
+    db.session.add(user)
+    db.session.commit()
     return True
 
 
