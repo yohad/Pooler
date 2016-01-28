@@ -8,7 +8,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://cjwvasqesgbsvu:lFtoER2Wn6aJzFlaCpWk8z2aq5@ec2-54-235-152-114.compute-1.amazonaws.com:5432/d459eu53bllfh8'
 heroku = Heroku(app)
 db = SQLAlchemy(app)
-db.create_all()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,6 +28,17 @@ def secret_data():
     if password=='bobbyboten':
         return 'super secret data'
     return 'secret data'
+
+@app.route('/SQL')
+def sq_l():
+    yosi = User(name = 'Yosi', ID = 1, age = 32)
+    dafna = User(name = 'Dafna', ID = 2, age = 16)
+    db.session.add(yosi)
+    db.session.add(dafna)
+    db.session.commit()
+    users = User.query.all()
+    response = json.dumps(users)
+    return Response(response = response, mimetype='application/json')
 
 @app.route('/user')
 def user_get():
