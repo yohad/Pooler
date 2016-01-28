@@ -30,6 +30,7 @@ def secret_data():
 
 @app.route('/user')
 def user_get():
+    global users
     response = json.dumps([
     {
         'ID':user.id,
