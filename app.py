@@ -41,17 +41,16 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
-@app.route('/signup/')
+@app.route('/signup/', methods = ['POST','GET'])
 def signup():
-    try:
+    if request.method == 'POST':
         ID = request.args.get('id')
         name = request.args.get('name')
         age = request.args.get('age')
         if add_user(ID, name, age):
             return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
         return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
-    except Exception as e:
-        return Response(response = e)
+    
 @app.route('/user')
 def user_get():
     users = User.query.all()
