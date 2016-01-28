@@ -1,6 +1,9 @@
 import os
-from flask import Flask
+from flask import Flask, request, Response, json
 from flask.ext.heroku import Heroku
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import text
+
 
 app = Flask(__name__)
 heroku = Heroku(app)
@@ -11,6 +14,9 @@ def hello_world():
 
 @app.route('/data')
 def secret_data():
+    password = request.args.get('password')
+    if password=='bobbyboten':
+        return 'super secret data'
     return 'secret data'
 
 if __name__ == '__main__':
