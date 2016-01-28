@@ -5,6 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import text
 
 class User:
+    id = None
+    name = None
+    age = None
     def __init__(self, ID, name, age):
         self.id = ID
         self.name = name
@@ -30,7 +33,6 @@ def secret_data():
 
 @app.route('/user')
 def user_get():
-    global users
     response = json.dumps([
     {
         'ID':user.id,
