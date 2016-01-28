@@ -31,14 +31,17 @@ def secret_data():
 
 @app.route('/SQL')
 def sq_l():
-    yosi = User(name = 'Yosi', ID = 1, age = 32)
-    dafna = User(name = 'Dafna', ID = 2, age = 16)
-    db.session.add(yosi)
-    db.session.add(dafna)
-    db.session.commit()
-    users = User.query.all()
-    response = json.dumps(users)
-    return Response(response = response, mimetype='application/json')
+    try:
+        yosi = User(name = 'Yosi', ID = 1, age = 32)
+        dafna = User(name = 'Dafna', ID = 2, age = 16)
+        db.session.add(yosi)
+        db.session.add(dafna)
+        db.session.commit()
+        users = User.query.all()
+        response = json.dumps(users)
+        return Response(response = response, mimetype='application/json')
+    except Exception as e:
+        return Response(response=e)
 
 @app.route('/user')
 def user_get():
