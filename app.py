@@ -31,15 +31,18 @@ def secret_data():
 
 @app.route('/SQL')
 def sq_l():
-    add_user(username = 'yosi', userid = 1, userage = 35)
-    add_user(username = 'dafna', userid = 2, userage = 16)
-    users = User.query.all()
-    response = json.dumps([{
-        'name':user.name,
-        'ID':user.id,
-        'age':user.age
-    } for user in users])
-    return Response(response = response, mimetype='application/json')
+    try:
+        add_user(username = 'yosi', userid = 1, userage = 35)
+        add_user(username = 'dafna', userid = 2, userage = 16)
+        users = User.query.all()
+        response = json.dumps([{
+            'name':user.name,
+            'ID':user.id,
+            'age':user.age
+        } for user in users])
+        return Response(response = response, mimetype='application/json')
+    except Exception as e:
+        return Response(response=e)
 
 @app.route('/user')
 def user_get():
