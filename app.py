@@ -34,13 +34,12 @@ def secret_data():
 @app.route('/user')
 def user_get():
     try:
-        response = json.dumps([
-        {
+        data = [[{
             'ID':user.id,
             'name':user.name,
             'age':user.age
-        }
-        ] for user in users)
+        }] for user in users]
+        response = json.dumps(data)
         return Response(response=response, mimetype="application/json")
     except Exception as e:
         return Response(response=e)
