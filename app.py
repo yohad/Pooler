@@ -31,8 +31,7 @@ def secret_data():
 
 @app.route('/SQL')
 def sq_l():
-    add_user(username = 'yosi', userid = 1, userage = 35)
-    add_user(username = 'dafna', userid = 2, userage = 16)
+    ID = request.args.get('ID')
     users = User.query.all()
     response = json.dumps([{
             'name':user.name,
@@ -41,29 +40,32 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
+@app.route('/signup/<int:ID>#<int:age>#<name>')
+def signup(ID, age, name):
+    if add_user(ID, name, age):
+        return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
+    return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
+
 @app.route('/user')
 def user_get():
-    try:
-        data = [{
-            'ID':user.id,
-            'name':user.name,
-            'age':user.age
-        } for user in users]
-        response = json.dumps(data)
-        return Response(response=response, mimetype="application/json")
-    except Exception as e:
-        return Response(response=e)
+    data = [{
+        'ID':user.id,
+        'name':user.name,
+        'age':user.age
+    } for user in users]
+    response = json.dumps(data)
+    return Response(response=response, mimetype="application/json")
 
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
     return Response(response = json.dumps('ERROR 404'), mimetype = 'application/json')
     if duplicate_test is not None:
-        return -1
+        return False
     user = User(ID = userid, name = username, age = userage)
     return Response(response = json.dumps('ERROR 405'), mimetype = 'application/json')
     db.session.add(user)
     db.session.commit()
-    return 0
+    return True
 
 
 if __name__ == '__main__':
