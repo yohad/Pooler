@@ -17,7 +17,6 @@ class User(db.Model):
         self.id = ID
         self.name = name
         self.age = age
-db.session.commit()
 
 @app.route('/')
 def hello_world():
@@ -33,10 +32,8 @@ def secret_data():
 @app.route('/SQL')
 def sq_l():
     try:
-        yosi = User(name = 'Yosi', ID = 1, age = 32)
-        dafna = User(name = 'Dafna', ID = 2, age = 16)
-        add_user(yosi)
-        add_user(dafna)
+        add_user(username = 'yosi', userid = 1, userage = 35)
+        add_user(username = 'dafna', userid = 2, userage = 16)
         users = User.query.all()
         response = json.dumps([{
             'name':user.name,
