@@ -4,11 +4,6 @@ from flask.ext.heroku import Heroku
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import text
 
-
-yosi = User(209929256, 'yosi', 25)
-david = User(158627528, 'david', 34)
-users = [yosi, david]
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'ec2-54-235-152-114.compute-1.amazonaws.com'
 heroku = Heroku(app)
