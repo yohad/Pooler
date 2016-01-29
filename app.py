@@ -25,6 +25,8 @@ class Route(db.Model):
     destination_lat = db.Column(db.Float,unique=False)
     destination_lng = db.Column(db.Float, unique=False)
     driver_id = db.Column(db.Integer, primary_key=True)
+    start = db.Column(db.String, unique=False)
+    destination = db.Column(db.String, unique=False)
     id = None
     def __init__(self,start,destination,st_lat,st_lng,dest_lat,dest_lng, id):
         self.start_lat = st_lat
@@ -32,6 +34,8 @@ class Route(db.Model):
         self.destination_lat = dest_lat
         self.destination_lng = dest_lng
         self.driver_id = id
+        self.start= start
+        self.destination = destination
 
 @app.route('/')
 def hello_world():
