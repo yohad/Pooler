@@ -94,23 +94,26 @@ def find_routes():
 
 @app.route('/travels/', methods = ['GET', 'POST'])
 def get_travels():
-    id = request.args.get('id')
-    driver = User.query.filter_by(id = id).first()
-    if driver is None:
-        return Response(response = json.dumps('There is no such user in the database.'))
-    if request.method == 'GET':
-        route = Route.query.filter_by(id = id).first()
-        if route is None:
-            return Response(response = json.dumps('There is no such route.'))
-        resp = json.dumps({
-            'start_latitude':route.start_lat,
-            'start_longtitude':route.start_lng,
-            'destination_latitude':route.destination_lat,
-            'destination_longtitude':route.destination_lng,
-            'start':route.start,
-            'destination':route.destination
-        })
-        return Response(response=resp, mimetype = 'application/json')
+    try:
+        id = request.args.get('id')
+        driver = User.query.filter_by(id = id).first()
+        if driver is None:
+            return Response(response = json.dumps('There is no such user in the database.'))
+        if request.method == 'GET':
+            route = Route.query.filter_by(id = id).first()
+            if route is None:
+                return Response(response = json.dumps('There is no such route.'))
+            resp = json.dumps({
+                'start_latitude':route.start_lat,
+                'start_longtitude':route.start_lng,
+                'destination_latitude':route.destination_lat,
+                'destination_longtitude':route.destination_lng,
+                'start':route.start,
+                'destination':route.destination
+            })
+            return Response(response=resp, mimetype = 'application/json')
+    except Exception as e:
+        return Response(response=e)
 @app.route('/routestart/')
 def route_start():
     id = request.args.get('id')
