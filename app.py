@@ -30,7 +30,7 @@ class Route(db.Model):
     destination_lat = db.Column(db.Float,unique=False)
     destination_lng = db.Column(db.Float, unique=False)
     driver_id = db.Column(db.Integer, primary_key=True)
-    def __init__(self,start,destination,st_lat,st_lng,dest_lat,dest_lng, id):
+    def __init__(self,st_lat,st_lng,dest_lat,dest_lng, id):
         self.start_lat = st_lat
         self.start_lng = st_lng
         self.destination_lat = dest_lat
@@ -147,7 +147,7 @@ def route_start():
         slng = request.args.get('slng')
         dlat = request.args.get('dlat')
         dlng = request.args.get('dlng')
-        if not add_route(dlat, dlng, slat, slng, id, start, destination):
+        if not add_route(dlat, dlng, slat, slng, id):
             return Response(response=json.dumps('Route registration failed'))
         return Response(response=json.dumps('Route registration completed successfully'))
     except Exception as e:
@@ -167,7 +167,7 @@ def update_location():
     lon = request.args.get('lng')
     route = Route.query.filter_by(driver_id=id).first()
     if route is None:
-        return Response(response=json.jump('No such route'))
+        return Response(response=json.dumps('No such route'))
     route.start_lat = lat
     route.start_lng = lon
     db.session.commit()
