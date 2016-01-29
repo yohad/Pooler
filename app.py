@@ -110,7 +110,7 @@ def find_routes():
         if None in [slat, slng, dlat, dlng]:
             return Response(response='Invalid arguments.')
 
-        routes = find_matching_routes(slat,slng,dlat,dlnt)
+        routes = find_matching_routes(slat,slng,dlat,dlng)
         return Response(response=json.dumps([{
             'driver_id':route[0].driver_id,
             'walking_distance':route[1]
