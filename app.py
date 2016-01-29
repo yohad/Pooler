@@ -113,9 +113,10 @@ def find_routes():
     if None in [slat, slng, dlat, dlng]:
         return Response(response='Invalid arguments.')
 
-    routes = find_matching_routes(slat,slng,dlat,dlnt,0.000225)
+    routes = find_matching_routes(slat,slng,dlat,dlnt)
     return Response(response=json.dumps([{
-        'driver_id':route.driver_id
+        'driver_id':route[0].driver_id,
+        'walking_distance':route[1]
     } for route in routes]), mimetype='application/json')
 
 @app.route('/travels/', methods = ['GET', 'POST'])
@@ -175,12 +176,16 @@ def add_route(dlat,dlng,slat,slng,id,start,destination):
     return True
 
 
-def find_matching_routes(slat,slng,dlat,dlng, sqradius):
+def find_matching_routes(slat,slng,dlat,dlng):
     routes = []
-    for route in Route.query.all():
-        if math.pow(route.start_lat-slat,2)+math.pow(route.start_lng-slng,2)==sqradius and \
-           math.pow(route.destination_lat-dlat,2)+math.pow(route.destination_lng-dlng,2)==sqradius:
-           routes.append(route)
+    all_routes = Route.query.all()
+    routes_by_distance = []
+    for route in all_routes:
+        routes_by_distance.append((route, math.sqrt(math.pow(route.start_lat-slat,2)+math.pow(route.start_lng-slng,2))+\
+                                    math.sqrt(math.pow(route.destination_lat-dlat,2)+math.pow(route.destination_lng-dlng,2))))
+    routes_by_distance.sort(key = lambda x: x[1])
+    for i in routes_by_distance[:5]:
+        routes.append(i)
     return routes
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
