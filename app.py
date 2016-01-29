@@ -55,7 +55,7 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
-@app.route('/signup', methods = ['POST','GET'])
+@app.route('/signup/', methods = ['POST','GET'])
 def signup():
     if request.method == 'POST':
         ID = request.args.get('id')
