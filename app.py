@@ -57,9 +57,9 @@ def sq_l():
 @app.route('/signup/', methods = ['POST','GET'])
 def signup():
     if request.method == 'POST':
-        ID = request.form['id']
-        name = request.form['name']
-        age = request.form['age']
+        ID = request.args.get('id')
+        name = request.args.get('name')
+        age = request.args.get('age')
         if add_user(ID, name, age):
             return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
         return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
@@ -91,12 +91,12 @@ def get_travels(id):
         })
         return Response(response=resp, mimetype = 'application/json')
     elif request.method == 'POST':
-        slat = request.form['slat']
-        slng = request.form['slng']
-        dlat = request.form['dlat']
-        dlng = request.form['dlng']
-        start = request.form['start']
-        destination = request.form['dest']
+        slat = request.args.get('slat')
+        slng = request.args.get('slng')
+        dlat = request.args.get('dlat')
+        dlng = request.args.get('dlng')
+        start = request.args.get('start')
+        destination = request.args.get('dest')
         if not add_route(dlat, dlng, slat, slng, id, start, destination):
             return Response(json.dumps('Route registration failed'))
         return Response(json.dumps('Route registration completed successfully'))
