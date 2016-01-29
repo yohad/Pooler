@@ -27,16 +27,18 @@ class Route(db.Model):
     driver_id = db.Column(db.Integer, primary_key=True)
     start = db.Column(db.String, unique=False)
     destination = db.Column(db.String, unique=False)
-    id = None
     def __init__(self,start,destination,st_lat,st_lng,dest_lat,dest_lng, id):
         self.start_lat = st_lat
         self.start_lng = st_lng
         self.destination_lat = dest_lat
         self.destination_lng = dest_lng
         self.driver_id = id
-        self.start= start1
-        self.destination = destination1
+        self.start= start
+        self.destination = destination
 
+db.drop_all()
+db.create_all()
+db.commit()
 @app.route('/')
 def hello_world():
     return 'Hello World!'
@@ -100,7 +102,7 @@ def get_travels():
         if driver is None:
             return Response(response = json.dumps('There is no such user in the database.'))
         if request.method == 'GET':
-            route = Route.query.filter_by(id = id).first()
+            route = Route.query.filter_by(driver_id = id).first()
             if route is None:
                 return Response(response = json.dumps('There is no such route.'))
             resp = json.dumps({
