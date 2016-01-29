@@ -59,6 +59,15 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
+@app.route('/id/')
+def check_id():
+    id = request.args.get('id')
+    user = User.query.filter_by(id=id).first()
+    if user is None:
+        return Response(response=json.dumps('0'))
+    return Response(response=json.dumps('1'))
+
+
 @app.route('/signup/')
 def signup():
     ID = request.args.get('id')
