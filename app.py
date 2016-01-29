@@ -59,9 +59,9 @@ def sq_l():
 def signup():
     try:
         if request.method == 'POST':
-            ID = request.form['id']
-            name = request.form['name']
-            age = request.form['age']
+            ID = request.get_json().get('id')
+            name = request.get_json().get('name')
+            age = request.get_json().get('age')
             if add_user(ID, name, age):
                 return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
             return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
