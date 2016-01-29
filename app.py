@@ -105,19 +105,17 @@ def get_travels():
             'destination_longtitude':route.destination_lng
         })
         return Response(response=resp, mimetype = 'application/json')
-    elif request.method == 'POST':
-        try:
-            slat = request.args.get('slat')
-            slng = request.args.get('slng')
-            dlat = request.args.get('dlat')
-            dlng = request.args.get('dlng')
-            start = request.args.get('start')
-            destination = request.args.get('dest')
-            if not add_route(dlat, dlng, slat, slng, id, start, destination):
-                return Response(response=json.dumps('Route registration failed'))
-            return Response(response=json.dumps('Route registration completed successfully'))
-        except Exception as e:
-            return Response(response=e)
+@app.route(/routestart/)
+def route_start():
+    slat = request.args.get('slat')
+    slng = request.args.get('slng')
+    dlat = request.args.get('dlat')
+    dlng = request.args.get('dlng')
+    start = request.args.get('start')
+    destination = request.args.get('dest')
+    if not add_route(dlat, dlng, slat, slng, id, start, destination):
+        return Response(response=json.dumps('Route registration failed'))
+    return Response(response=json.dumps('Route registration completed successfully'))
 
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
