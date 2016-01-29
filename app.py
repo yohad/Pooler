@@ -28,7 +28,7 @@ class Route(db.Model):
     start = db.Column(db.String, unique=False)
     destination = db.Column(db.String, unique=False)
     id = None
-    def __init__(self,start1,destination1,st_lat,st_lng,dest_lat,dest_lng, id):
+    def __init__(self,start,destination,st_lat,st_lng,dest_lat,dest_lng, id):
         self.start_lat = st_lat
         self.start_lng = st_lng
         self.destination_lat = dest_lat
