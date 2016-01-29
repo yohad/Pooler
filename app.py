@@ -77,8 +77,8 @@ def signup():
     ID = request.args.get('id')
     name = request.args.get('name')
     age = request.args.get('age')
-    sex = request.args.get('sex')
-    if add_user(ID, name, age, sex):
+    #sex = request.args.get('sex')
+    if add_user(ID, name, age):
         return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
     return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
 
@@ -89,7 +89,7 @@ def users_get():
         'id':current_user.id,
         'name':current_user.name,
         'age':current_user.age,
-        'sex':current_user.sex
+        #'sex':current_user.sex
         } for current_user in users])
     return Response(response = response, mimetype = 'application/json')
 
@@ -100,7 +100,7 @@ def get_user():
     return Response(response=json.dumps({
         'name':user.name,
         'age':user.age,
-        'sex':user.sex
+        #'sex':user.sex
     }))
 
 @app.route('/findroutes/')
@@ -161,9 +161,22 @@ def route_start():
 def end_ride():
     driver_id = request.args.get('id')
     Route.query.filter_by(driver_id=driver_id).delete()
+    db.session.commit()
     return Response(response=json.dumps('1'))
 
-def add_user(userid, username, userage, sex):
+@app.route('/gps/')
+def update_location():
+    id = request.args.get('id')
+    lat = request.args.get('lat')
+    lon = request.args.get('lng')
+    route = Route.query.filter_by(driver_id=id).first()
+    if route is None:
+        return Response(response=json.jump('No such route'))
+    route.start_lat = lat
+    route.start_lng = lon
+    db.session.commit()
+
+def add_user(userid, username, userage, sex = None):
     duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is not None:
         return False
