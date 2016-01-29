@@ -55,7 +55,7 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
-@app.route('/signup/', methods = ['POST','GET'])
+@app.route('/signup/', methods = ['POST'])
 def signup():
     try:
         if request.method == 'POST':
