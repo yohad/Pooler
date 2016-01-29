@@ -74,8 +74,9 @@ def user_get():
         } for current_user in users])
     return Response(response = response, mimetype = 'application/json')
 
-@app.route('/travels/<int:id>', methods = ['GET', 'POST'])
-def get_travels(id):
+@app.route('/travels/', methods = ['GET', 'POST'])
+def get_travels():
+    id = request.args.get('id')
     driver = User.query.filter_by(id = id).first()
     if driver is None:
         return Response(response = json.dumps('There is no such user in the database.'))
