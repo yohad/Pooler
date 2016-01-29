@@ -99,8 +99,8 @@ def get_travels():
         start = request.args.get('start')
         destination = request.args.get('dest')
         if not add_route(dlat, dlng, slat, slng, id, start, destination):
-            return Response(json.dumps('Route registration failed'))
-        return Response(json.dumps('Route registration completed successfully'))
+            return Response(response=json.dumps('Route registration failed'))
+        return Response(response=json.dumps('Route registration completed successfully'))
 
 
 def add_user(userid, username, userage):
