@@ -57,15 +57,13 @@ def sq_l():
 
 @app.route('/signup/')
 def signup():
-    try:
-        ID = request.args.get('id')
-        name = request.args.get('name')
-        age = request.args.get('age')
-        if add_user(ID, name, age):
-            return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
-        return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
-    except Exception as e:
-        return Response(response=e)
+    ID = request.args.get('id')
+    name = request.args.get('name')
+    age = request.args.get('age')
+    if add_user(ID, name, age):
+        return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
+    return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
+
 
 @app.route('/user')
 def user_get():
@@ -122,16 +120,13 @@ def get_travels():
             return Response(response=e)
 
 def add_user(userid, username, userage):
-    try:
-        duplicate_test = User.query.filter_by(id = userid).first()
-        if duplicate_test is not None:
-            return False
-            user = User(ID = userid, name = username, age = userage)
-            db.session.add(user)
-            db.session.commit()
-            return True
-    except Exception as e:
-        return "40000005yo"
+    duplicate_test = User.query.filter_by(id = userid).first()
+    if duplicate_test is not None:
+        return False
+    user = User(ID = userid, name = username, age = userage)
+    db.session.add(user)
+    db.session.commit()
+    return True
 
 def add_route(dlat,dlng,slat,slng,id,start,destination):
     route_test = Route.query.filter_by(id = id).first()
