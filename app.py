@@ -101,20 +101,22 @@ def get_user():
 
 @app.route('/findroutes/')
 def find_routes():
-    slat = request.args.get('slat')
-    slng = request.args.get('slng')
-    dlat = request.args.get('dlat')
-    dlng = request.args.get('dlng')
+    try:
+        slat = request.args.get('slat')
+        slng = request.args.get('slng')
+        dlat = request.args.get('dlat')
+        dlng = request.args.get('dlng')
 
-    if None in [slat, slng, dlat, dlng]:
-        return Response(response='Invalid arguments.')
+        if None in [slat, slng, dlat, dlng]:
+            return Response(response='Invalid arguments.')
 
-    routes = find_matching_routes(slat,slng,dlat,dlnt)
-    return Response(response=json.dumps([{
-        'driver_id':route[0].driver_id,
-        'walking_distance':route[1]
-    } for route in routes]), mimetype='application/json')
-
+        routes = find_matching_routes(slat,slng,dlat,dlnt)
+        return Response(response=json.dumps([{
+            'driver_id':route[0].driver_id,
+            'walking_distance':route[1]
+        } for route in routes]), mimetype='application/json')
+    except Exception as e:
+        return Response(response=e)
 @app.route('/travels/', methods = ['GET', 'POST'])
 def get_travels():
     try:
