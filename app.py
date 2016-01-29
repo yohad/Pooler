@@ -25,7 +25,7 @@ class Route(db.Model):
     destination_lat = db.Column(db.Float,unique=False)
     destination_lng = db.Column(db.Float, unique=False)
     driver_id = db.Column(db.Integer, primary_key=True)
-    def __init__(self,st_lat,st_lng,dest_lat,dest_lng, id):
+    def __init__(self,start,destination,st_lat,st_lng,dest_lat,dest_lng, id):
         self.start_lat = st_lat
         self.start_lng = st_lng
         self.destination_lat = dest_lat
@@ -60,9 +60,9 @@ def sq_l():
 @app.route('/signup/', methods = ['POST','GET'])
 def signup():
     if request.method == 'POST':
-        ID = request.args.get('id')
-        name = request.args.get('name')
-        age = request.args.get('age')
+        ID = request.form['id']
+        name = request.form['name']
+        age = request.form['age']
         if add_user(ID, name, age):
             return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
         return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
@@ -77,9 +77,30 @@ def user_get():
         } for current_user in users])
     return Response(response = response, mimetype = 'application/json')
 
-@app.route('/travels/<int:id>', methods = ['GET'])
+@app.route('/travels/<int:id>', methods = ['GET', 'POST'])
 def get_travels(id):
-    pass
+    if request.method == 'GET':
+        route = Route.query.filter_by(driver_id = id).first()
+        if route is None:
+            return Response(response = json.dumps('There is no such route.'))
+        resp = json.dumps({
+            'start_latitude':route.start_lat,
+            'start_longtitude':route.start_lng,
+            'destination_latitude':route.destination_lat,
+            'destination_longtitude':route.destination_lng
+        })
+        return Response(response=resp, mimetype = 'application/json')
+    elif request.method == 'POST':
+        slat = request.form['slat]'
+        slng = request.form['slng']
+        dlat = request.form['dlat']
+        dlng = request.form['dlng']
+        start = request.form['start']
+        destination = request.form['dest']
+        if not add_route(dlat, dlng, slat, slng, id, start, destination):
+            return Response(json.dumps('Route registration failed'))
+        return Response(json.dumps('Route registration completed successfully'))
+
 
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
@@ -90,6 +111,14 @@ def add_user(userid, username, userage):
     db.session.commit()
     return True
 
+def add_route(dlat,dlng,slat,slng,id,start,destination):
+    route_test = Route.query.filter_by(id = id).first()
+    if route_test is not None:
+        return False
+    route = Route(st_lat=slat,st_lng=slng,dest_lat=dlat,dest_lng=dlng)
+    db.session.add(route)
+    db.session.commit()
+    return True
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
