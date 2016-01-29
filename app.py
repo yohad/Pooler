@@ -119,7 +119,7 @@ def add_route(dlat,dlng,slat,slng,id,start,destination):
     route_test = Route.query.filter_by(id = id).first()
     if route_test is not None:
         return False
-    route = Route(st_lat=slat,st_lng=slng,dest_lat=dlat,dest_lng=dlng,id=id)
+    route = Route(st_lat=slat,st_lng=slng,dest_lat=dlat,dest_lng=dlng,id=id, start = start, destination = destination)
     db.session.add(route)
     db.session.commit()
     return True
