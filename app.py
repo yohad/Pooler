@@ -16,10 +16,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False)
     age = db.Column(db.Integer, unique=False)
-    def __init__(self, ID, name, age):
+    sex = db.Column(db.String, unique=False)
+    def __init__(self, ID, name, age, sex):
         self.id = ID
         self.name = name
         self.age = age
+        self.sex=sex
 
 class Route(db.Model):
     start_lat = db.Column(db.Float, unique=False)
@@ -37,6 +39,10 @@ class Route(db.Model):
         self.driver_id = id
         self.start= start
         self.destination = destination
+
+db.drop_all()
+db.create_all()
+db.session.commit()
 @app.route('/')
 def hello_world():
     return 'Hello World!'
@@ -73,19 +79,31 @@ def signup():
     ID = request.args.get('id')
     name = request.args.get('name')
     age = request.args.get('age')
-    if add_user(ID, name, age):
+    sex = request.args.get('sex')
+    if add_user(ID, name, age, sex):
         return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
     return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
 
-@app.route('/user')
-def user_get():
+@app.route('/users/')
+def users_get():
     users = User.query.all()
     response = json.dumps([{
         'id':current_user.id,
         'name':current_user.name,
-        'age':current_user.age
+        'age':current_user.age,
+        'sex':current_user.sex
         } for current_user in users])
     return Response(response = response, mimetype = 'application/json')
+
+@app.route('/user/')
+def get_user():
+    id = request.args.get('id')
+    user = User.query.filter_by(id=id).first()
+    return Response(response=json.dumps({
+        'name':user.name,
+        'age':user.age,
+        'sex':user.sex
+    }))
 
 @app.route('/findroutes/')
 def find_routes():
@@ -137,11 +155,11 @@ def route_start():
         return Response(response=json.dumps('Route registration completed successfully'))
     except Exception as e:
         return Response(response=e)
-def add_user(userid, username, userage):
+def add_user(userid, username, userage, sex):
     duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is not None:
         return False
-    user = User(ID = userid, name = username, age = userage)
+    user = User(ID = userid, name = username, age = userage, sex = sex)
     db.session.add(user)
     db.session.commit()
     return True
