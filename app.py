@@ -157,6 +157,12 @@ def route_start():
     except Exception as e:
         return Response(response=e)
 
+@app.route('/endride/')
+def end_ride():
+    driver_id = request.args.get('id')
+    Route.query.filter_by(driver_id=driver_id).delete()
+    return Response(response=json.dumps('1'))
+
 def add_user(userid, username, userage, sex):
     duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is not None:
@@ -187,5 +193,8 @@ def find_matching_routes(slat,slng,dlat,dlng):
     for i in routes_by_distance[:5]:
         routes.append(i)
     return routes
+
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
