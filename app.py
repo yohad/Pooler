@@ -178,7 +178,7 @@ def add_route(dlat,dlng,slat,slng,id,start,destination):
 def find_matching_routes(slat,slng,dlat,dlng, sqradius):
     routes = []
     for route in Route.query.all():
-        if math.pow(route.start_lat-slat,2)+math.pow(route.start_lng-slng,2)==sqradius and
+        if math.pow(route.start_lat-slat,2)+math.pow(route.start_lng-slng,2)==sqradius and \
            math.pow(route.destination_lat-dlat,2)+math.pow(route.destination_lng-dlng,2)==sqradius:
            routes.append(route)
     return routes
