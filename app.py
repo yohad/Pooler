@@ -28,14 +28,14 @@ class Route(db.Model):
     start = db.Column(db.String, unique=False)
     destination = db.Column(db.String, unique=False)
     id = None
-    def __init__(self,start,destination,st_lat,st_lng,dest_lat,dest_lng, id):
+    def __init__(self,start1,destination1,st_lat,st_lng,dest_lat,dest_lng, id):
         self.start_lat = st_lat
         self.start_lng = st_lng
         self.destination_lat = dest_lat
         self.destination_lng = dest_lng
         self.driver_id = id
-        self.start= start
-        self.destination = destination
+        self.start= start1
+        self.destination = destination1
 
 @app.route('/')
 def hello_world():
