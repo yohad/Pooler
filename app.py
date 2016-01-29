@@ -55,13 +55,13 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
-@app.route('/signup/', methods = ['POST'])
+@app.route('/signup/', methods = ['GET'])
 def signup():
     try:
-        if request.method == 'POST':
-            ID = request.get_json().get('id')
-            name = request.get_json().get('name')
-            age = request.get_json().get('age')
+        if request.method == 'GET':
+            ID = request.args.get('id')
+            name = request.args.get('name')
+            age = request.args.get('age')
             if add_user(ID, name, age):
                 return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
             return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
