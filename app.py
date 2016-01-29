@@ -103,6 +103,8 @@ def get_travels():
             'start_longtitude':route.start_lng,
             'destination_latitude':route.destination_lat,
             'destination_longtitude':route.destination_lng
+            'start':route.start
+            'destination':route.destination
         })
         return Response(response=resp, mimetype = 'application/json')
 @app.route('/routestart/')
