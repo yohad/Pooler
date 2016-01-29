@@ -40,9 +40,6 @@ class Route(db.Model):
         self.start= start
         self.destination = destination
 
-db.drop_all()
-db.create_all()
-db.session.commit()
 @app.route('/')
 def hello_world():
     return 'Hello World!'
