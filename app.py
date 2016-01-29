@@ -55,7 +55,7 @@ def sq_l():
     } for user in users])
     return Response(response = response, mimetype='application/json')
 
-@app.route('/signup/', methods = ['POST','GET'])
+@app.route('/signup', methods = ['POST','GET'])
 def signup():
     if request.method == 'POST':
         ID = request.args.get('id')
@@ -74,6 +74,19 @@ def user_get():
         'age':current_user.age
         } for current_user in users])
     return Response(response = response, mimetype = 'application/json')
+
+@app.route('/findroutes/')
+def find_routes():
+    slat = request.args.get('slat')
+    slng = request.args.get('slng')
+    dlat = request.args.get('dlat')
+    dlng = request.args.get('dlng')
+
+    if None in [slat, slng, dlat, dlng]:
+        return Response(response='Invalid arguments.')
+
+    routes = find_matching_routes(slat,slng,dlat,dlnt)
+    return Response(response=json.dumps([route.id for route in routes]), mimetype='application/json')
 
 @app.route('/travels/', methods = ['GET', 'POST'])
 def get_travels():
@@ -124,5 +137,8 @@ def add_route(dlat,dlng,slat,slng,id,start,destination):
     db.session.commit()
     return True
 
+def find_matching_routes(slat,slng,dlat,dlng):
+    routes = Route.query.filter_by(slat=slat).filter_by(slng=slng).filter_by(dlat=dlat).filter_by(dlng=dlng)
+    return routes
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
