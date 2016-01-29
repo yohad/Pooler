@@ -3,3 +3,4 @@ Flask
 Flask-SQLAlchemy
 Flask-Heroku
 google-api-python-client
+flask-cors

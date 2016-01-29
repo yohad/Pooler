@@ -3,8 +3,10 @@ from flask import Flask, request, Response, json
 from flask.ext.heroku import Heroku
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import text
+from flask.ext.cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
 heroku = Heroku(app)
 db = SQLAlchemy(app)
@@ -65,7 +67,6 @@ def signup():
     if add_user(ID, name, age):
         return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
     return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
-
 
 @app.route('/user')
 def user_get():
