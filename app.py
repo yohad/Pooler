@@ -76,6 +76,9 @@ def user_get():
 
 @app.route('/travels/<int:id>', methods = ['GET', 'POST'])
 def get_travels(id):
+    driver = User.query.filter_by(id = id).first()
+    if driver is None:
+        return Response(response = json.dumps('There is no such user in the database.'))
     if request.method == 'GET':
         route = Route.query.filter_by(driver_id = id).first()
         if route is None:
