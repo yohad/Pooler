@@ -118,17 +118,19 @@ def get_travels():
         return Response(response=e)
 @app.route('/routestart/')
 def route_start():
-    id = request.args.get('id')
-    slat = request.args.get('slat')
-    slng = request.args.get('slng')
-    dlat = request.args.get('dlat')
-    dlng = request.args.get('dlng')
-    start = request.args.get('start')
-    destination = request.args.get('dest')
-    if not add_route(dlat, dlng, slat, slng, id, start, destination):
-        return Response(response=json.dumps('Route registration failed'))
-    return Response(response=json.dumps('Route registration completed successfully'))
-
+    try:
+        id = request.args.get('id')
+        slat = request.args.get('slat')
+        slng = request.args.get('slng')
+        dlat = request.args.get('dlat')
+        dlng = request.args.get('dlng')
+        start = request.args.get('start')
+        destination = request.args.get('dest')
+        if not add_route(dlat, dlng, slat, slng, id, start, destination):
+            return Response(response=json.dumps('Route registration failed'))
+        return Response(response=json.dumps('Route registration completed successfully'))
+    except Exception as e:
+        return Response(response=e)
 def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is not None:
