@@ -1,4 +1,5 @@
 import os
+import math
 from flask import Flask, request, Response, json
 from flask.ext.heroku import Heroku
 from flask_sqlalchemy import SQLAlchemy
@@ -112,8 +113,10 @@ def find_routes():
     if None in [slat, slng, dlat, dlng]:
         return Response(response='Invalid arguments.')
 
-    routes = find_matching_routes(slat,slng,dlat,dlnt)
-    return Response(response=json.dumps([route.id for route in routes]), mimetype='application/json')
+    routes = find_matching_routes(slat,slng,dlat,dlnt,0.000225)
+    return Response(response=json.dumps([{
+        'driver_id':route.driver_id
+    } for route in routes]), mimetype='application/json')
 
 @app.route('/travels/', methods = ['GET', 'POST'])
 def get_travels():
@@ -152,6 +155,7 @@ def route_start():
         return Response(response=json.dumps('Route registration completed successfully'))
     except Exception as e:
         return Response(response=e)
+
 def add_user(userid, username, userage, sex):
     duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is not None:
@@ -170,8 +174,13 @@ def add_route(dlat,dlng,slat,slng,id,start,destination):
     db.session.commit()
     return True
 
-def find_matching_routes(slat,slng,dlat,dlng):
-    routes = Route.query.filter_by(slat=slat).filter_by(slng=slng).filter_by(dlat=dlat).filter_by(dlng=dlng)
+
+def find_matching_routes(slat,slng,dlat,dlng, sqradius):
+    routes = []
+    for route in Route.query.all():
+        if math.pow(route.start_lat-slat,2)+math.pow(route.start_lng-slng,2)==sqradius and
+           math.pow(route.destination_lat-dlat,2)+math.pow(route.destination_lng-dlng,2)==sqradius:
+           routes.append(route)
     return routes
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
