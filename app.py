@@ -17,12 +17,12 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False)
     age = db.Column(db.Integer, unique=False)
-    sex = db.Column(db.String, unique=False)
-    def __init__(self, ID, name, age, sex):
+    #sex = db.Column(db.String, unique=False)
+    def __init__(self, ID, name, age):
         self.id = ID
         self.name = name
         self.age = age
-        self.sex=sex
+        #self.sex=sex
 
 class Route(db.Model):
     start_lat = db.Column(db.Float, unique=False)
@@ -133,8 +133,6 @@ def get_travels():
                 'start_longtitude':route.start_lng,
                 'destination_latitude':route.destination_lat,
                 'destination_longtitude':route.destination_lng,
-                'start':route.start,
-                'destination':route.destination
             })
             return Response(response=resp, mimetype = 'application/json')
     except Exception as e:
@@ -172,11 +170,11 @@ def update_location():
     route.start_lng = lon
     db.session.commit()
 
-def add_user(userid, username, userage, sex = None):
+def add_user(userid, username, userage):
     duplicate_test = User.query.filter_by(id = userid).first()
     if duplicate_test is not None:
         return False
-    user = User(ID = userid, name = username, age = userage, sex = sex)
+    user = User(ID = userid, name = username, age = userage)
     db.session.add(user)
     db.session.commit()
     return True
