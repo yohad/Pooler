@@ -32,10 +32,6 @@ class Route(db.Model):
         self.destination_lng = dest_lng
         self.driver_id = id
 
-db.drop_all()
-db.create_all()
-db.session.commit()
-
 @app.route('/')
 def hello_world():
     return 'Hello World!'
