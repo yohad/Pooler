@@ -91,7 +91,7 @@ def get_travels(id):
         })
         return Response(response=resp, mimetype = 'application/json')
     elif request.method == 'POST':
-        slat = request.form['slat]'
+        slat = request.form['slat']
         slng = request.form['slng']
         dlat = request.form['dlat']
         dlng = request.form['dlng']
