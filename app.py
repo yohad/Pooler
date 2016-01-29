@@ -30,16 +30,12 @@ class Route(db.Model):
     destination_lat = db.Column(db.Float,unique=False)
     destination_lng = db.Column(db.Float, unique=False)
     driver_id = db.Column(db.Integer, primary_key=True)
-    start = db.Column(db.String, unique=False)
-    destination = db.Column(db.String, unique=False)
     def __init__(self,start,destination,st_lat,st_lng,dest_lat,dest_lng, id):
         self.start_lat = st_lat
         self.start_lng = st_lng
         self.destination_lat = dest_lat
         self.destination_lng = dest_lng
         self.driver_id = id
-        self.start= start
-        self.destination = destination
 
 @app.route('/')
 def hello_world():
@@ -149,8 +145,6 @@ def route_start():
         slng = request.args.get('slng')
         dlat = request.args.get('dlat')
         dlng = request.args.get('dlng')
-        start = request.args.get('start')
-        destination = request.args.get('dest')
         if not add_route(dlat, dlng, slat, slng, id, start, destination):
             return Response(response=json.dumps('Route registration failed'))
         return Response(response=json.dumps('Route registration completed successfully'))
@@ -185,11 +179,11 @@ def add_user(userid, username, userage, sex = None):
     db.session.commit()
     return True
 
-def add_route(dlat,dlng,slat,slng,id,start,destination):
+def add_route(dlat,dlng,slat,slng,id):
     route_test = Route.query.filter_by(driver_id = id).first()
     if route_test is not None:
         return False
-    route = Route(st_lat=slat,st_lng=slng,dest_lat=dlat,dest_lng=dlng,id=id, start = start, destination = destination)
+    route = Route(st_lat=slat,st_lng=slng,dest_lat=dlat,dest_lng=dlng,id=id)
     db.session.add(route)
     db.session.commit()
     return True
