@@ -58,13 +58,12 @@ def sq_l():
 @app.route('/signup/')
 def signup():
     try:
-        if request.method == 'GET':
-            ID = request.args.get('id')
-            name = request.args.get('name')
-            age = request.args.get('age')
-            if add_user(ID, name, age):
-                return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
-            return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
+        ID = request.args.get('id')
+        name = request.args.get('name')
+        age = request.args.get('age')
+        if add_user(ID, name, age):
+            return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
+        return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
     except Exception as e:
         return Response(response=e)
 
