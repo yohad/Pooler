@@ -107,6 +107,7 @@ def get_travels():
         return Response(response=resp, mimetype = 'application/json')
 @app.route('/routestart/')
 def route_start():
+    id = request.args.get('id')
     slat = request.args.get('slat')
     slng = request.args.get('slng')
     dlat = request.args.get('dlat')
