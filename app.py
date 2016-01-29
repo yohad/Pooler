@@ -99,7 +99,7 @@ def get_travels():
     if driver is None:
         return Response(response = json.dumps('There is no such user in the database.'))
     if request.method == 'GET':
-        route = Route.query.filter_by(driver_id = id).first()
+        route = Route.query.filter_by(id = id).first()
         if route is None:
             return Response(response = json.dumps('There is no such route.'))
         resp = json.dumps({
