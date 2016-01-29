@@ -65,7 +65,7 @@ def signup():
             if add_user(ID, name, age):
                 return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
             return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
-    except Exception as e
+    except Exception as e:
         return Response(response=e)
 
 @app.route('/user')
