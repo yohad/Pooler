@@ -60,8 +60,8 @@ def signup():
     try:
         if request.method == 'POST':
             ID = request.args.get('id')
-            name = request.data('name')
-            age = request.data('age')
+            name = request.args.get('name')
+            age = request.args.get('age')
             if add_user(ID, name, age):
                 return Response(response=json.dumps('Signup Successful'), mimetype='application/json')
             return Response(response=json.dumps('Signup Failed'), mimetype='application/json')
